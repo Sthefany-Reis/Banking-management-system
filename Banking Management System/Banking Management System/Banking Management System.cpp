@@ -16,7 +16,7 @@ void heading() {
 	cout << "\t\t\t\t\t*     | BANKING MANAGEMENT SYSTEM |     *\n";
 	cout << "\t\t\t\t\t*****************************************\n";
 }
-	
+
 
 struct Account {
 	//struct to store account data
@@ -199,63 +199,41 @@ void editAccount() {
 			cout << "\t\t\t\t\t*****************************************\n";
 			cout << "\t\t\t\t\t* Please Enter New Name: ";
 			getline(cin, a.name);
-			name = a.name;
-			exists = false;
-			// Reset the exists flag for duplicate check
-			for (auto& a : accounts) {
-				// Loop to check for duplicate names
-				if (a.name == name) {
-					exists = true;
-					break;
-				}
-			}
+			cout << "\t\t\t\t\t* Please Enter New Balance: " << currency << setprecision(2) << fixed;
+			getline(cin, a.balance);
 			if (exists) {
-				//If exists
+				// If exists save the updated accounts
+				saveAccounts(accounts);
 				cout << "\t\t\t\t\t*****************************************\n";
-				cout << "\t\t\t\t\t* Account Name Already Exists.          *\n";
-				cout << "\t\t\t\t\t* Please Enter A Different Name.        *\n";
+				cout << "\t\t\t\t\t* Account Updated Successfully.\n";
+				cout << "\t\t\t\t\t*****************************************\n";
+				cout << "\t\t\t\t\t* Account Details:                      *\n";
+				cout << "\t\t\t\t\t* Account ID: " << a.id << "\n";
+				cout << "\t\t\t\t\t* Account Holder's Name: " << a.name << "\n";
+				cout << "\t\t\t\t\t* Updated Balance: " << currency << setprecision(2) << fixed << a.balance << "\n";
+				cout << "\t\t\t\t\t*****************************************\n";
+				cout << "\t\t\t\t\t* Press any key to continue...\n";
+				cin.ignore();
+				cin.get(); // Wait for user input
+				cout << "\t\t\t\t\t*****************************************\n";
+				system("cls");
+			}
+			else {
+				// If doesnt exist
+				cout << "\t\t\t\t\t*****************************************\n";
+				cout << "\t\t\t\t\t* Account ID Not Found.\n";
+				cout << "\t\t\t\t\t* Please Enter A Valid ID.              *\n";
 				cout << "\t\t\t\t\t*****************************************\n";
 				Sleep(2000); //timer
 				system("cls");
 				heading();
 				return editAccount();
 			}
-			// If doesn't exist, proceed to update the account
-			cout << "\t\t\t\t\t* Please Enter New Balance: " << currency << setprecision(2) << fixed;
-			getline(cin, a.balance);
-
 			break;
 		}
 	}
 
-	if (exists) {
-		// If exists save the updated accounts
-		saveAccounts(accounts);
-		cout << "\t\t\t\t\t*****************************************\n";
-		cout << "\t\t\t\t\t* Account Updated Successfully.\n";
-		cout << "\t\t\t\t\t*****************************************\n";
-		cout << "\t\t\t\t\t* Account Details:                      *\n";
-		cout << "\t\t\t\t\t* Account ID: " << a.id << "\n";
-		cout << "\t\t\t\t\t* Account Holder's Name: " << a.name << "\n";
-		cout << "\t\t\t\t\t* Updated Balance: " << currency << setprecision(2) << fixed << a.balance << "\n";
-		cout << "\t\t\t\t\t*****************************************\n";
-		cout << "\t\t\t\t\t* Press any key to continue...\n";
-		cin.ignore();
-		cin.get(); // Wait for user input
-		cout << "\t\t\t\t\t*****************************************\n";
-		system("cls");
-	}
-	else {
-		// If doesnt exist
-		cout << "\t\t\t\t\t*****************************************\n";
-		cout << "\t\t\t\t\t* Account ID Not Found.\n";
-		cout << "\t\t\t\t\t* Please Enter A Valid ID.              *\n";
-		cout << "\t\t\t\t\t*****************************************\n";
-		Sleep(2000); //timer
-		system("cls");
-		heading();
-		return editAccount();
-	}
+
 }
 
 
