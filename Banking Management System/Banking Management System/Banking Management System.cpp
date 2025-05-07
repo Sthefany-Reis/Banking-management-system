@@ -9,15 +9,14 @@
 using namespace std;
 const char currency = char(156); //£
 
+
 void heading() {
 	//function to display heading
 	cout << "\t\t\t\t\t*****************************************\n";
 	cout << "\t\t\t\t\t*     | BANKING MANAGEMENT SYSTEM |     *\n";
 	cout << "\t\t\t\t\t*****************************************\n";
 }
-
-const string FILENAME = "account.csv";
-	//CSV file name
+	
 
 struct Account {
 	//struct to store account data
@@ -41,7 +40,7 @@ vector<Account> readAccounts() {
 	//function to read accounts from the file
 	vector<Account> accounts;
 	//vector to store accounts
-	ifstream file(FILENAME);
+	ifstream file("account.csv");
 	string line;
 	bool isHeader = true;
 	// Flag to skip header line
@@ -56,26 +55,37 @@ vector<Account> readAccounts() {
 
 	return accounts;
 	// Return the vector of accounts
+
 }
 
 void saveAccounts(const vector<Account>& accounts) {
 	//function to save accounts to file
-	ofstream file(FILENAME);
+	ofstream file("account.csv");
 	file << "ID,Name,Balance\n";
 	for (const auto& a : accounts) {
 		file << a.id << "," << a.name << "," << a.balance << "\n";
+
 	}
 }
 
 
 void appendAccount(const Account& a) {
 	//function to append each account to the file
-	ifstream check(FILENAME);
+	ifstream check("account.csv");
+	// Check if file exists
+
+	if (!check.is_open()) {
+		// If file doesn't exist, create it
+		ofstream createFile("account.csv");
+		createFile.close();
+	}
+
+
 	bool newFile = !check.good();
 	// Check if file exists by attempting to open it
 	check.close();
 
-	ofstream file(FILENAME, ios::app);
+	ofstream file("account.csv", ios::app);
 
 	if (newFile) {
 		// If file didn't exist, create it and add header
@@ -94,7 +104,7 @@ void displayAccounts() {
 	cout << "\t\t\t\t\t*****************************************\n";
 	for (const auto& a : accounts) {
 		// Loop through each account and display its details
-		cout << "\t\t\t\t\tID: " << a.id << ", Name: " << a.name << ", Balance: " << currency << setprecision(2) << fixed << a.balance << "\n";
+		cout << "\t\t\t\t\t* ID: " << a.id << ", Name: " << a.name << ", Balance: " << currency << setprecision(2) << fixed << a.balance << "\n";
 	}
 	cout << "\t\t\t\t\t*****************************************\n";
 	cout << "\t\t\t\t\t* Press any key to continue...\n";
@@ -239,7 +249,7 @@ void editAccount() {
 		// If doesnt exist
 		cout << "\t\t\t\t\t*****************************************\n";
 		cout << "\t\t\t\t\t* Account ID Not Found.\n";
-		cout << "\t\t\t\t\t* Please Enter A Valid ID.             *\n";
+		cout << "\t\t\t\t\t* Please Enter A Valid ID.              *\n";
 		cout << "\t\t\t\t\t*****************************************\n";
 		Sleep(2000); //timer
 		system("cls");
@@ -463,10 +473,8 @@ void manageBalance() {
 	}
 }
 
-
-int main() {
-	//function to display menu	
-	heading();
+void menu() {
+	//function to display menu
 	int choice;
 	do {
 		system("cls");
@@ -538,6 +546,16 @@ int main() {
 		}
 	} while (choice != 6);
 	// Loop until the user chooses to exit
+}
+
+
+
+int main() {
+	// Main function
+	system("cls");
+	heading();
+	menu();
+
 	return 0;
 }
 
